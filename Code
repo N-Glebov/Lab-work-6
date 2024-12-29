@@ -1,21 +1,23 @@
 #include <iostream>
 #include <limits> // Для очищення буферу введення
+#include <vector>
 using namespace std;
 
-const int N = 50; // Максимальний розмір масиву
-
 // Функція введення масиву
-void input_arr(int in_arr[N], int &in_n) {
+vector<int> input_arr(int& in_n) {
     cout << "Кількість елементів: ";
     cin >> in_n;
     cout << "Введіть елементи масиву: ";
+    vector<int> in_arr(in_n);
     for (int i = 0; i < in_n; i++) {
         cin >> in_arr[i];
     }
+
+    return in_arr;
 }
 
 // Функція виведення масиву
-void output_arr(const int out_arr[], int out_n) {
+void output_arr(const vector<int> out_arr, int out_n) {
     cout << "Елементи масиву: ";
     for (int i = 0; i < out_n; i++) {
         cout << out_arr[i] << " ";
@@ -24,7 +26,7 @@ void output_arr(const int out_arr[], int out_n) {
 }
 
 // Функція для підрахунку кількості проміжків монотонності
-int count_monotonic_segments(const int arr[], int n) {
+int count_monotonic_segments(const vector<int> arr, int n) {
     if (n < 2) return 0; // Якщо менше 2 елементів, проміжків немає
     int count = 0;
     int i = 0;
@@ -34,10 +36,12 @@ int count_monotonic_segments(const int arr[], int n) {
         if (arr[i] < arr[i + 1]) { // Зростання
             while (i < n - 1 && arr[i] < arr[i + 1]) i++;
             count++;
-        } else if (arr[i] > arr[i + 1]) { // Спадання
+        }
+        else if (arr[i] > arr[i + 1]) { // Спадання
             while (i < n - 1 && arr[i] > arr[i + 1]) i++;
             count++;
-        } else {
+        }
+        else {
             i++; // Пропустити рівні елементи
         }
     }
@@ -47,15 +51,15 @@ int count_monotonic_segments(const int arr[], int n) {
 
 // Функція для виконання Завдання 1
 void task1() {
-    int arr[N], n;
-    input_arr(arr, n);       // Введення масиву
+    int n;
+    vector<int> arr = input_arr(n);       // Введення масиву
     output_arr(arr, n);      // Виведення масиву
     int segments = count_monotonic_segments(arr, n);
     cout << "Кількість проміжків монотонності: " << segments << endl;
 }
 
 // Функція для зсуву масиву вліво
-void shift_left(int arr[], int n) {
+void shift_left(vector<int>& arr, int n) {
     for (int i = 0; i < n - 1; i++) {
         arr[i] = arr[i + 1];
     }
@@ -64,8 +68,8 @@ void shift_left(int arr[], int n) {
 
 // Функція для виконання Завдання 2
 void task2() {
-    int arr[N], n;
-    input_arr(arr, n);       // Введення масиву
+    int n;
+    vector<int> arr = input_arr(n);       // Введення масиву
     output_arr(arr, n);      // Виведення початкового масиву
     shift_left(arr, n);      // Зсув масиву
     cout << "Масив після зсуву: ";
@@ -92,13 +96,13 @@ int main() {
         }
 
         switch (choice) {
-            case 1: task1(); break;
-            case 2: task2(); break;
-            case 0: cout << "Вихід з програми." << endl; break;
-            default: cout << "Невірний вибір. Спробуйте ще раз." << endl;
+        case 1: task1(); break;
+        case 2: task2(); break;
+        case 0: cout << "Вихід з програми." << endl; break;
+        default: cout << "Невірний вибір. Спробуйте ще раз." << endl;
         }
 
-      cout << endl; // Додати порожній рядок для зручності
+        cout << endl; // Додати порожній рядок для зручності
 
     } while (choice != 0);
     return 0;
